@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block title %}Page d'accueil{% endblock %}
+{% block main-title %}Page d'accueil{% endblock %}
+
+{% block content %} <!-- Use flex to using the full height browser -->
+
+    <div class="row mt-4 pt-4">
+
+        <div class="col-6 text-center">
+            <p>Inscrivez-vous maintenant</p>
+            <a href="{% url 'signup' %}">
+                <button type="button" class="btn btn-primary">S'inscrire</button>
+            </a>
+        </div>
+        <div class="col-6">
+
+            <form method="post">
+                {% csrf_token %}
+                <div class="input-group mb-3">
+                    <span class="input-group-text">Nom d'utilisateur</span>
+                    {{ username_form }}
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">Mot de passe</span>
+                    {{ password_form }}
+                </div>
+                <button type="submit" class="form-control btn btn-primary">Se connecter</button>
+            </form>
+
+            <p>{{ message }}</p>
+
+        </div>
+
+    </div>
+
+{% endblock %}

@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% block title %}Formulaire d'inscription{% endblock %}
+{% block main-title %}Formulaire d'inscription{% endblock %}
+
+{% block content %} <!-- Use flex to using the full height browser -->
+
+    <div class="row mt-4 pt-4">
+
+        <div class="col-12 d-flex justify-content-center">
+
+            <form method="post">
+                {% csrf_token %}
+                <div class="input-group mb-3">
+                    <span class="input-group-text">Nom d'utilisateur</span>
+                    {{ username_form }}
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">Mot de passe</span>
+                    {{ password_form }}
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">Confirmer mot de passe</span>
+                    {{ repeat_pwd_form }}
+                </div>
+                <div class="d-flex flex-row-reverse">
+                    <button type="submit" class="form-inline btn btn-primary">S'inscrire</button> &nbsp; &nbsp;
+                    <a href="{% url 'home' %}" class="btn btn-primary">Retourner</a>
+                </div>
+            </form>
+
+            <p>{{ message }}</p>
+
+        </div>
+
+    </div>
+
+{% endblock %}

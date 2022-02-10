@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% block title %}Créer une critique (en réponse à un ticket){% endblock %}
+{% block main-title %}Créer une critique (en réponse à un ticket){% endblock %}
+
+{% block content %} <!-- Use flex to using the full height browser -->
+
+    <div class="row">
+
+        <div class="col-12 m-3">
+
+            <h5 class="text-center m-2 p-2">Créer une critique</h5>
+
+            <div class="border p-2">
+
+                <div class="pb-3">Vous êtes en train de poster en r&eacute;ponse à</div>
+
+                <div class="border p-2">
+
+                    <p class="d-flex justify-content-between">
+                        <span>{{ ticket.user|title }} a demandé une critique</span>
+                        <span>{{ ticket.time_created }}</span>
+                    </p>
+                    <h5>{{ ticket.title|title }}</h5>
+                    <p>{{ ticket.description }}</p>
+                    {% if ticket.image %}
+                        <img src="/media/{{ ticket.image }}" alt="{{ ticket.title }}" class="img-thumbnail rounded float-left">
+                    {% endif %}
+
+                </div>
+
+                <hr class="start-0" />
+
+                <form method="post" enctype="multipart/form-data" class="m-3">
+                    {% csrf_token %}
+                    <div class="pb-3 mb-3">Critique</div>
+                    {{ review_form }}
+                    <div class="d-flex flex-row-reverse">
+                        <button type="submit" class="form-inline btn btn-primary pl-3 pr-3">Envoyer</button>
+                    </div>
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+
+{% endblock %}

@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block title %}Créer un ticket{% endblock %}
+{% block main-title %}Créer un ticket{% endblock %}
+
+{% block content %}
+
+    <div class="row">
+
+        <div class="col-9">
+
+            <h5 class="text-center m-2 p-2">Créer un ticket</h5>
+
+            <div class="border p-2">
+
+                <div class="pb-3">Demande de critique pour un livre ou un article</div>
+
+                <form method="post" enctype="multipart/form-data" class="m-3">
+                    {% csrf_token %}
+                    {{ ticket_form }}
+                    <div class="d-flex flex-row-reverse">
+                        <button type="submit" class="form-inline btn btn-primary pl-3 pr-3">Envoyer</button>
+                    </div>
+                </form>
+
+            </div>
+
+        </div>
+        <div class="col-3 mt-5 pt-2">
+            {% if ticket.image %}
+                <img src="/media/{{ ticket.image }}" alt="{{ ticket.title }}" class="img-thumbnail rounded float-left">
+            {% endif %}
+        </div>
+
+    </div>
+
+{% endblock %}

@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% block title %}Créer une critique (pas en réponse à un ticket){% endblock %}
+{% block main-title %}Créer une critique (pas en réponse à un ticket){% endblock %}
+
+{% block content %} <!-- Use flex to using the full height browser -->
+
+    <div class="row">
+
+        <div class="col-12 m-3">
+
+            <h5 class="text-center m-2 p-2">Créer une critique</h5>
+
+            <div class="border p-2">
+
+                <div class="pb-3">Livre / Article</div>
+
+                <form method="post" enctype="multipart/form-data" class="m-3">
+                    {% csrf_token %}
+                    {{ ticket_form }}
+                    <hr class="start-0" />
+                    <div class="pb-3 mb-3">Critique</div>
+                    {{ review_form }}
+                    <div class="d-flex flex-row-reverse">
+                        <button type="submit" class="form-inline btn btn-primary pl-3 pr-3">Envoyer</button>
+                    </div>
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+
+{% endblock %}

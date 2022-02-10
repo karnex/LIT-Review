@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+{% block title %}Onglet d'abonnements{% endblock %}
+{% block main-title %}Onglet d'abonnements{% endblock %}
+
+{% block content %}
+
+    <div class="row">
+
+        <div class="col-12 m-3">
+
+            <div class="p-2">
+                <p class="text-center fw-bold mb-1">Suivre d'autres utilisateurs</p>
+
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="input-group">
+                        <!--<input type="text" class="form-control text-center" placeholder="Nom d'utilisateur">-->
+                        {{ username_form }}
+                        <button class="btn btn-primary" type="submit">Envoyer</button>
+                    </div>
+                </form>
+
+                {% if returned_users %}
+                    <table class="table table-bordered p-2 mt-2">
+                        <tr class="bg-light">
+                            <th class="text-center">
+                                Utilisateurs retournés
+                            </th>
+                        </tr>
+                        {% for user in returned_users %}
+                            <tr>
+                                <td class="d-flex justify-content-between p-3">
+                                    <span>{{ user.username|title }}</span>
+                                    <a href="{% url 'follow_a_user' user_id=user.id %}"><button type="button" class="btn btn-outline-primary">S'abonner</button></a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                {% endif %}
+
+                <table class="table table-bordered p-2 mt-2">
+                    <tr class="bg-light">
+                        <th class="text-center">
+                            Abonnements
+                        </th>
+                    </tr>
+                    {% for user in followed_users %}
+                        <tr>
+                            <td class="d-flex justify-content-between p-3">
+                                <span>{{ user.followed_user|title }}</span>
+                                <a href="{% url 'unfollow_a_user' user_id=user.followed_user_id %}"><button type="button" class="btn btn-outline-primary">D&eacute;sabonner</button></a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+
+                <table class="table table-bordered p-2 mt-2">
+                    <tr class="bg-light">
+                        <th class="text-center">
+                            Abonnés
+                        </th>
+                    </tr>
+                    {% for user in subscribers %}
+                        <tr>
+                            <td class="d-flex justify-content-between p-3">
+                                <span>{{ user.user|title }}</span>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+{% endblock %}

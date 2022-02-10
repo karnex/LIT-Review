@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% block title %}Flux{% endblock %}
+{% block main-title %}Flux{% endblock %}
+
+{% block content %}
+
+    <div class="row">
+
+        <div class="col-12 m-3">
+
+            {# for the rating: ★★★★ ☆☆☆☆ #}
+
+            <p class="m-3"> {# essayer avec d-flex #}
+                <a href="{% url 'create_ticket' %}"><button class="btn btn-primary col-4 offset-md-1">Demander une critique</button></a>
+                <a href="{% url 'create_review' %}"><button class="btn btn-primary col-4 offset-md-2">Cr&eacute;er une critique</button></a>
+            </p>
+
+            {% for elm in flow %}
+
+                <div class="border p-2 mt-2">
+                    <p class="d-flex justify-content-between">
+                        <span>{{ elm.user|title }} a demandé une critique</span>
+                        <span>{{ elm.time_created }}</span>
+                    </p>
+                    <h5>{{ elm.title|title }}</h5>
+                    <p>{{ elm.description }}</p>
+                    <div class="row m-2">
+                        <div class="col-3">
+                            {% if elm.image %}
+                                <img src="/media/{{ elm.image }}" alt="{{ elm.title }}" class="img-thumbnail rounded float-left">
+                            {% endif %}
+                        </div>
+
+                        {% if elm.replied %}
+                            <div class="col-9 bg-light border border-primary rounded p-4">
+                                <p class="d-flex justify-content-between">
+                                    <span>{{ elm.review_user|title }} a publié une critique</span>
+                                    <span>{{ elm.review_time_created }}</span>
+                                </p>
+                                <h5>{{ elm.headline }} - {{ elm.rating }}</h5>
+                                <p>{{ elm.body }}</p>
+                            </div>
+                        {% endif %}
+
+                    </div>
+                    {% if not elm.replied %}
+                        <div class="d-flex flex-row-reverse m-4">
+                            <a href="{% url 'review_from_ticket' ticket_id=elm.ticket_id %}"><button class="btn btn-primary p-2">Cr&eacute;er une critique</button></a>
+                        </div>
+                    {% endif %}
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+{% endblock %}

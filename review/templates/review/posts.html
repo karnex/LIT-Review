@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% load rating_star %}
+{% block title %}Mes posts{% endblock %}
+{% block main-title %}Mes posts{% endblock %}
+
+{% block content %}
+
+    <div class="row">
+
+        <div class="col-12 m-3">
+
+            <p class="m-3 text-center">Vos posts</p>
+
+            {% for elm in posts %}
+
+                {% if elm.content_type == 'ticket' %}
+
+                    <div class="border p-2 mt-2">
+                        <p class="d-flex justify-content-between">
+                            <span>{{ elm.user|title }} a demandé une critique</span>
+                            <span>{{ elm.time_created }}</span>
+                        </p>
+                        <h5>{{ elm.title|title }}</h5>
+                        <p>{{ elm.description }}</p>
+                        <div class="row m-2">
+                            <div class="col-3">
+                                {% if elm.image %}
+                                    <img src="/media/{{ elm.image }}" alt="{{ elm.title }}" class="img-thumbnail rounded float-left">
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="d-flex flex-row-reverse m-4">
+                            <a href="{% url 'delete_ticket' ticket_id=elm.id %}"><button class="btn btn-primary m-2 p-2">Supprimer</button></a>
+                            <a href="{% url 'update_ticket' ticket_id=elm.id %}"><button class="btn btn-primary m-2 p-2">Modifier</button></a>
+                        </div>
+                    </div>
+
+                {% elif elm.content_type == 'review' %}
+
+                    <div class="border p-2 mt-2">
+                        <p class="d-flex justify-content-between">
+                            <span>{{ elm.user|title }} a publié une critique concernant <em>&Prime;{{ elm.ticket.title }}&Prime;</em></span>
+                            <span>{{ elm.time_created }}</span>
+                        </p>
+                        <h5>{{ elm.headline|title }} - {{ elm.rating|rating_star }}</h5>
+                        <p>{{ elm.body }}</p>
+                        <div class="row m-2">
+                            <div class="col-3">
+                                {% if elm.image %}
+                                    <img src="/media/{{ elm.image }}" alt="{{ elm.title }}" class="img-thumbnail rounded float-left">
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="d-flex flex-row-reverse m-4">
+                            <a href="{% url 'delete_review' review_id=elm.id %}"><button class="btn btn-primary m-2 p-2">Supprimer</button></a>
+                            <a href="{% url 'review_from_ticket' ticket_id=elm.ticket.id review_id=elm.id %}"><button class="btn btn-primary m-2 p-2">Modifier</button></a>
+                        </div>
+                    </div>
+
+                {% endif %}
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+{% endblock %}
