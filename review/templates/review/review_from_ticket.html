@@ -22,9 +22,11 @@
                     </p>
                     <h5>{{ ticket.title|title }}</h5>
                     <p>{{ ticket.description }}</p>
-                    {% if ticket.image %}
-                        <img src="/media/{{ ticket.image }}" alt="{{ ticket.title }}" class="img-thumbnail rounded float-left">
-                    {% endif %}
+                    <div class="col-3">
+                        {% if ticket.image %}
+                            <img src="/media/{{ ticket.image }}" alt="{{ ticket.title }}" class="img-thumbnail rounded float-left">
+                        {% endif %}
+                    </div>
 
                 </div>
 
