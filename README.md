@@ -6,13 +6,10 @@
 
 ## Configurer l'application
 
+### Cloner le dépôt distant
 1) Dans votre terminal, déplacez-vous dans le dossier de votre choix: cd path_of_your_choice
-2) Initialiser Git pour le projet: git init
-3) Créer la connection avec le dépôt distant du projet:<br/>
-```git remote add LR git@github.com:karnex/LIT-Review.git```
-4) Cloner le dépôt distant vers notre nouveu dossier:<br/> 
+2) Cloner le dépôt distant vers notre nouveu dossier:<br/> 
 ```git clone git@github.com:karnex/LIT-Review.git```
-
 
 ### Configuration pour système Windows
 

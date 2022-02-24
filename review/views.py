@@ -19,7 +19,7 @@ def create_ticket(request, ticket_id: Union[int, None] = None):
     """ Create or update a ticket in order to request a review """
     ticket = Ticket.objects.get(id=ticket_id) if ticket_id else None
     ticket_form = forms.TicketForm(request.POST or None,
-                                   initial={'title': ticket.title, 'description': ticket.description,
+                                   initial={'ticket_title': ticket.title, 'description': ticket.description,
                                             'image': ticket.image}) if ticket_id else forms.TicketForm()
 
     if request.method == 'POST':
@@ -31,7 +31,7 @@ def create_ticket(request, ticket_id: Union[int, None] = None):
                 # Create the ticket
                 ticket = Ticket(user_id=request.user.id)
                 ticket.time_created = timezone.now()
-            ticket.title = ticket_form.cleaned_data['title']
+            ticket.title = ticket_form.cleaned_data['ticket_title']
             ticket.description = ticket_form.cleaned_data['description']
             if request.FILES and request.FILES['image']:
                 ticket.image = ticket_form.cleaned_data['image']
@@ -62,7 +62,7 @@ def create_review(request):
         if ticket_form.is_valid():
 
             ticket = Ticket(user_id=request.user.id)
-            ticket.title = ticket_form.cleaned_data['title']
+            ticket.title = ticket_form.cleaned_data['ticket_title']
             ticket.description = ticket_form.cleaned_data['description']
             if request.FILES and request.FILES['image']:
                 ticket.image = ticket_form.cleaned_data['image']
@@ -74,7 +74,7 @@ def create_review(request):
                 # Ticket has been created, so create the related review
                 review = Review(ticket=ticket)
                 review.rating = review_form.cleaned_data['rating']
-                review.headline = review_form.cleaned_data['title']
+                review.headline = review_form.cleaned_data['review_title']
                 review.body = review_form.cleaned_data['comment']
                 review.user_id = request.user.id
                 review.time_created = timezone.now()
@@ -136,6 +136,8 @@ def delete_element(request, review_id: Union[int, None] = None, ticket_id: Union
             except Exception as e:
                 messages.warning(request, f'Erreur survenue lors de la suppression de la critique: {e}')
             else:
+                review.ticket.replied = False
+                review.ticket.save()
                 messages.success(request, 'Cet article a bien été supprimé !')
     elif ticket_id:
         ticket = Ticket.objects.get(id=ticket_id)
@@ -148,8 +150,6 @@ def delete_element(request, review_id: Union[int, None] = None, ticket_id: Union
                 messages.warning(request, f'Erreur survenue lors de la suppression du ticket: {e}')
             else:
                 messages.success(request, 'Ce ticket a bien été supprimé !')
-                ticket.replied = False
-                ticket.save()
     else:
         messages.warning(request, 'Le système ne comprend pas votre demande...')
 
@@ -161,9 +161,9 @@ def review_from_ticket(request, ticket_id: int, review_id: Union[int, None] = No
     """ Create or update a review from a specific ticket """
     ticket = Ticket.objects.get(id=ticket_id)
     review = Review.objects.get(id=review_id) if review_id else None
-    review_form = forms.ReviewForm(request.POST or None,
-                                   initial={'rating': review.rating, 'title': review.headline, 'comment': review.body},
-                                   label_suffix='') if review_id else forms.ReviewForm()
+    review_form = forms.ReviewForm(
+        request.POST or None, initial={'rating': review.rating, 'review_title': review.headline,
+                                       'comment': review.body}, label_suffix='') if review_id else forms.ReviewForm()
 
     if request.method == 'POST':
         review_form = forms.ReviewForm(request.POST)
@@ -176,7 +176,7 @@ def review_from_ticket(request, ticket_id: int, review_id: Union[int, None] = No
                 review.user_id = request.user.id
                 review.time_created = timezone.now()
             review.rating = review_form.cleaned_data['rating']
-            review.headline = review_form.cleaned_data['title']
+            review.headline = review_form.cleaned_data['review_title']
             review.body = review_form.cleaned_data['comment']
 
             try:

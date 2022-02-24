@@ -2,8 +2,8 @@ from django import forms
 
 
 class TicketForm(forms.Form):
-    title = forms.CharField(max_length=255, label='Titre', label_suffix='',
-                            widget=forms.TextInput(attrs={'class': 'form-control mt-2 mb-3'}))
+    ticket_title = forms.CharField(max_length=255, label='Titre', label_suffix='',
+                                   widget=forms.TextInput(attrs={'class': 'form-control mt-2 mb-3'}))
     description = forms.CharField(label='Description', label_suffix='', required=False,
                                   widget=forms.Textarea(attrs={'class': 'form-control mt-1 mb-3'}))
     image = forms.FileField(label='image', label_suffix='', required=False,
@@ -11,8 +11,8 @@ class TicketForm(forms.Form):
 
 
 class ReviewForm(forms.Form):
-    title = forms.CharField(max_length=255, label='Titre', label_suffix='',
-                            widget=forms.TextInput(attrs={'class': 'form-control mt-2 mb-3'}))
+    review_title = forms.CharField(max_length=255, label='Titre', label_suffix='',
+                                   widget=forms.TextInput(attrs={'class': 'form-control mt-2 mb-3'}))
     rating = forms.ChoiceField(label='Note', label_suffix='',
                                widget=forms.RadioSelect(attrs={'class': 'block mt-1 mb-3'}),
                                choices=[('0', ' - 0'), ('1', ' - 1'), ('2', ' - 2'), ('3', ' - 3'),
